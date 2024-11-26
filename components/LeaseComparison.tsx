@@ -18,13 +18,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
-
-interface Lease {
-  id: number;
-  carModel: string;
-  totalCost: number;
-  leaseTerm: number;
-}
+import { Lease } from '@/types/lease'
 
 interface SortableCardProps {
   lease: Lease;
@@ -53,7 +47,7 @@ function SortableCard({ lease }: SortableCardProps) {
         </CardHeader>
         <CardContent>
           <p>Total Cost: ${formatCurrency(lease.totalCost)}</p>
-          <p>Monthly Payment: ${formatCurrency(lease.totalCost / lease.leaseTerm)}</p>
+          <p>Monthly Payment: ${formatCurrency(lease.monthlyPayment)}</p>
           <p>Lease Term: {lease.leaseTerm} months</p>
         </CardContent>
       </Card>

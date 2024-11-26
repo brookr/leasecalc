@@ -5,32 +5,33 @@ import BottomNavBar from '../components/BottomNavBar'
 import LeaseCalculator from '../components/LeaseCalculator'
 import LeaseComparison from '../components/LeaseComparison'
 import Profile from '../components/Profile'
-import LeaseList from '../components/LeaseList'
+import { Lease } from '@/types/lease'
+import { TabType } from '@/types/navigation'
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('calculator')
-  const [leases, setLeases] = useState([])
-  const [editingLease, setEditingLease] = useState(null)
+  const [activeTab, setActiveTab] = useState<TabType>('calculator')
+  const [leases, setLeases] = useState<Lease[]>([])
+  const [editingLease, setEditingLease] = useState<Lease | null>(null)
 
   useEffect(() => {
-    const savedLeases = JSON.parse(localStorage.getItem('leases') || '[]')
+    const savedLeases = JSON.parse(localStorage.getItem('leases') || '[]') as Lease[]
     setLeases(savedLeases)
   }, [])
 
-  const saveLease = (lease) => {
-    if (!lease.carModel.trim()) {
+  const saveLease = (lease: Partial<Lease>) => {
+    if (!lease.carModel?.trim()) {
       return; // Don't save if car model is empty or just whitespace
     }
     
     const updatedLeases = editingLease
-      ? leases.map((l) => (l.id === editingLease.id ? lease : l))
+      ? leases.map((l) => (l.id === editingLease.id ? { ...lease, id: editingLease.id } : l))
       : [{ ...lease, id: Date.now() }, ...leases]
-    setLeases(updatedLeases)
+    setLeases(updatedLeases as Lease[])
     localStorage.setItem('leases', JSON.stringify(updatedLeases))
     setEditingLease(null)
   }
 
-  const deleteLease = (id) => {
+  const deleteLease = (id: number) => {
     const updatedLeases = leases.filter((lease) => lease.id !== id)
     setLeases(updatedLeases)
     localStorage.setItem('leases', JSON.stringify(updatedLeases))
@@ -45,22 +46,11 @@ export default function Home() {
             editingLease={editingLease}
             leases={leases}
             onEdit={setEditingLease}
-            onDelete={(id) => {
-              const updatedLeases = leases.filter((lease) => lease.id !== id);
-              setLeases(updatedLeases);
-              localStorage.setItem('leases', JSON.stringify(updatedLeases));
-            }}
+            onDelete={deleteLease}
           />
         )}
         {activeTab === 'comparison' && <LeaseComparison leases={leases} />}
         {activeTab === 'profile' && <Profile />}
-        {activeTab === 'list' && (
-          <LeaseList
-            leases={leases}
-            onEdit={setEditingLease}
-            onDelete={deleteLease}
-          />
-        )}
       </main>
       <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>

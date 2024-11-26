@@ -1,7 +1,14 @@
 import { Plus, User, BarChart2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Dispatch, SetStateAction } from 'react'
+import { TabType } from '@/types/navigation'
 
-export default function BottomNavBar({ activeTab, setActiveTab }) {
+interface BottomNavBarProps {
+  activeTab: TabType;
+  setActiveTab: Dispatch<SetStateAction<TabType>>;
+}
+
+export default function BottomNavBar({ activeTab, setActiveTab }: BottomNavBarProps) {
   return (
     <nav className="bg-white border-t border-gray-200">
       <div className="max-w-screen-xl mx-auto px-4">
@@ -34,4 +41,3 @@ export default function BottomNavBar({ activeTab, setActiveTab }) {
     </nav>
   )
 }
-

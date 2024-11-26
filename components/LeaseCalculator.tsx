@@ -1,12 +1,44 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent, FormEvent, MouseEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatCurrency } from '@/utils/formatters';
+import { Lease } from '@/types/lease'
 
-export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, onDelete }) {
+interface LeaseInput {
+  negotiatedPrice: number;
+  residualValue: number;
+  moneyFactor: number;
+  leaseTerm: number;
+  taxRate: number;
+  downPayment: number;
+  fees: number;
+  acquisitionFee: number;
+  expectedInsurance: number;
+}
+
+interface LeaseCalculations {
+  depreciationCost: number;
+  financeCharges: number;
+  totalTaxes: number;
+  adjustedCapCost: number;
+  apr: number;
+  monthlyPayment: number;
+  totalMonthlyPayment: number;
+  totalCost: number;
+}
+
+interface LeaseCalculatorProps {
+  onSave: (lease: Partial<Lease>) => void;
+  editingLease: Lease | null;
+  leases: Lease[];
+  onEdit: (lease: Lease) => void;
+  onDelete: (id: number) => void;
+}
+
+export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, onDelete }: LeaseCalculatorProps) {
   const [lease, setLease] = useState({
     carModel: '',
     msrp: 0,
@@ -29,7 +61,7 @@ export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, 
     }
   }, [editingLease])
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     const updatedLease = { ...lease, [name]: parseFloat(value) || value }
     setLease(updatedLease)
@@ -37,7 +69,7 @@ export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, 
     setMonthlyCost(monthlyPayment)
   }
 
-  const calculateLeaseDetails = (leaseData) => {
+  const calculateLeaseDetails = (leaseData: LeaseInput): LeaseCalculations => {
     const {
       negotiatedPrice,
       residualValue,
@@ -75,8 +107,17 @@ export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, 
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    submitLease()
+  }
+
+  const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    submitLease()
+  }
+
+  const submitLease = () => {
     const leaseDetails = calculateLeaseDetails(lease)
     onSave({ ...lease, ...leaseDetails })
     setLease({
@@ -232,7 +273,7 @@ export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, 
           </form>
         </CardContent>
         <CardFooter>
-          <Button onClick={handleSubmit} className="w-full">
+          <Button onClick={handleButtonClick} className="w-full">
             {editingLease ? 'Update' : 'Save'} Lease
           </Button>
         </CardFooter>
