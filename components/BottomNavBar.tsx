@@ -10,21 +10,25 @@ interface BottomNavBarProps {
 
 export default function BottomNavBar({ activeTab, setActiveTab }: BottomNavBarProps) {
   return (
-    <nav className="bg-white border-t border-gray-200">
+    <nav className="nav-modern">
       <div className="max-w-screen-xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setActiveTab('profile')}
-            className={activeTab === 'profile' ? 'text-primary' : 'text-gray-500'}
+            className={`nav-item-modern ${
+              activeTab === 'profile' 
+                ? 'text-primary bg-gradient-to-r from-purple-500/10 to-blue-500/10' 
+                : 'text-gray-500'
+            }`}
           >
             <User className="h-6 w-6" />
           </Button>
           <Button
             onClick={() => setActiveTab('calculator')}
             size="icon"
-            className="bg-primary text-white rounded-full shadow-lg"
+            className="button-modern rounded-full"
           >
             <Plus className="h-6 w-6" />
           </Button>
@@ -32,7 +36,11 @@ export default function BottomNavBar({ activeTab, setActiveTab }: BottomNavBarPr
             variant="ghost"
             size="icon"
             onClick={() => setActiveTab('comparison')}
-            className={activeTab === 'comparison' ? 'text-primary' : 'text-gray-500'}
+            className={`nav-item-modern ${
+              activeTab === 'comparison' 
+                ? 'text-primary bg-gradient-to-r from-purple-500/10 to-blue-500/10' 
+                : 'text-gray-500'
+            }`}
           >
             <BarChart2 className="h-6 w-6" />
           </Button>

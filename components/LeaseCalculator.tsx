@@ -53,6 +53,7 @@ export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, 
     expectedInsurance: 0,
   })
   const [monthlyCost, setMonthlyCost] = useState(0)
+  const [activeField, setActiveField] = useState<string | null>(null)
 
   useEffect(() => {
     if (editingLease) {
@@ -138,157 +139,250 @@ export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, 
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="card-modern">
         <CardHeader>
-          <CardTitle>{editingLease ? 'Edit Lease' : 'Calculate Lease'}</CardTitle>
+          <CardTitle className="gradient-text text-2xl font-bold">
+            {editingLease ? 'Edit Lease' : 'Calculate Lease'}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="mb-4">
-            <Label>Estimated Monthly Payment (excl. insurance)</Label>
-            <div className="text-2xl font-bold">${formatCurrency(monthlyCost)}</div>
+            <Label className="text-lg font-semibold">Estimated Monthly Payment (excl. insurance)</Label>
+            <div className="gradient-text text-3xl font-bold">
+              ${formatCurrency(monthlyCost)}
+            </div>
           </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="carModel">Car Model</Label>
+              <Label 
+                htmlFor="carModel" 
+                className={`font-medium ${activeField === 'carModel' ? 'label-active' : ''}`}
+              >
+                Car Model
+              </Label>
               <Input
+                className="input-modern"
                 id="carModel"
                 name="carModel"
                 value={lease.carModel}
                 onChange={handleChange}
+                onFocus={() => setActiveField('carModel')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="msrp">MSRP</Label>
+              <Label 
+                htmlFor="msrp" 
+                className={`font-medium ${activeField === 'msrp' ? 'label-active' : ''}`}
+              >
+                MSRP
+              </Label>
               <Input
+                className="input-modern"
                 id="msrp"
                 name="msrp"
                 type="number"
                 value={lease.msrp}
                 onChange={handleChange}
+                onFocus={() => setActiveField('msrp')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="negotiatedPrice">Negotiated Price</Label>
+              <Label 
+                htmlFor="negotiatedPrice" 
+                className={`font-medium ${activeField === 'negotiatedPrice' ? 'label-active' : ''}`}
+              >
+                Negotiated Price
+              </Label>
               <Input
+                className="input-modern"
                 id="negotiatedPrice"
                 name="negotiatedPrice"
                 type="number"
                 value={lease.negotiatedPrice}
                 onChange={handleChange}
+                onFocus={() => setActiveField('negotiatedPrice')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="residualValue">Residual Value</Label>
+              <Label 
+                htmlFor="residualValue" 
+                className={`font-medium ${activeField === 'residualValue' ? 'label-active' : ''}`}
+              >
+                Residual Value
+              </Label>
               <Input
+                className="input-modern"
                 id="residualValue"
                 name="residualValue"
                 type="number"
                 value={lease.residualValue}
                 onChange={handleChange}
+                onFocus={() => setActiveField('residualValue')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="moneyFactor">Money Factor</Label>
+              <Label 
+                htmlFor="moneyFactor" 
+                className={`font-medium ${activeField === 'moneyFactor' ? 'label-active' : ''}`}
+              >
+                Money Factor
+              </Label>
               <Input
+                className="input-modern"
                 id="moneyFactor"
                 name="moneyFactor"
                 type="number"
                 step="0.0001"
                 value={lease.moneyFactor}
                 onChange={handleChange}
+                onFocus={() => setActiveField('moneyFactor')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="leaseTerm">Lease Term (months)</Label>
+              <Label 
+                htmlFor="leaseTerm" 
+                className={`font-medium ${activeField === 'leaseTerm' ? 'label-active' : ''}`}
+              >
+                Lease Term (months)
+              </Label>
               <Input
+                className="input-modern"
                 id="leaseTerm"
                 name="leaseTerm"
                 type="number"
                 value={lease.leaseTerm}
                 onChange={handleChange}
+                onFocus={() => setActiveField('leaseTerm')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="downPayment">Down Payment</Label>
+              <Label 
+                htmlFor="downPayment" 
+                className={`font-medium ${activeField === 'downPayment' ? 'label-active' : ''}`}
+              >
+                Down Payment
+              </Label>
               <Input
+                className="input-modern"
                 id="downPayment"
                 name="downPayment"
                 type="number"
                 value={lease.downPayment}
                 onChange={handleChange}
+                onFocus={() => setActiveField('downPayment')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="taxRate">Tax Rate (%)</Label>
+              <Label 
+                htmlFor="taxRate" 
+                className={`font-medium ${activeField === 'taxRate' ? 'label-active' : ''}`}
+              >
+                Tax Rate (%)
+              </Label>
               <Input
+                className="input-modern"
                 id="taxRate"
                 name="taxRate"
                 type="number"
                 step="0.01"
                 value={lease.taxRate}
                 onChange={handleChange}
+                onFocus={() => setActiveField('taxRate')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="fees">Fees</Label>
+              <Label 
+                htmlFor="fees" 
+                className={`font-medium ${activeField === 'fees' ? 'label-active' : ''}`}
+              >
+                Fees
+              </Label>
               <Input
+                className="input-modern"
                 id="fees"
                 name="fees"
                 type="number"
                 value={lease.fees}
                 onChange={handleChange}
+                onFocus={() => setActiveField('fees')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="acquisitionFee">Acquisition Fee</Label>
+              <Label 
+                htmlFor="acquisitionFee" 
+                className={`font-medium ${activeField === 'acquisitionFee' ? 'label-active' : ''}`}
+              >
+                Acquisition Fee
+              </Label>
               <Input
+                className="input-modern"
                 id="acquisitionFee"
                 name="acquisitionFee"
                 type="number"
                 value={lease.acquisitionFee}
                 onChange={handleChange}
+                onFocus={() => setActiveField('acquisitionFee')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="expectedInsurance">Expected Monthly Insurance</Label>
+              <Label 
+                htmlFor="expectedInsurance" 
+                className={`font-medium ${activeField === 'expectedInsurance' ? 'label-active' : ''}`}
+              >
+                Expected Monthly Insurance
+              </Label>
               <Input
+                className="input-modern"
                 id="expectedInsurance"
                 name="expectedInsurance"
                 type="number"
                 value={lease.expectedInsurance}
                 onChange={handleChange}
+                onFocus={() => setActiveField('expectedInsurance')}
+                onBlur={() => setActiveField(null)}
                 required
               />
             </div>
+            <Button 
+              type="submit" 
+              className="button-modern w-full"
+            >
+              {editingLease ? 'Update Lease' : 'Save Lease'}
+            </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <Button onClick={handleButtonClick} className="w-full">
-            {editingLease ? 'Update' : 'Save'} Lease
-          </Button>
-        </CardFooter>
       </Card>
       
       <Card>
         <CardHeader>
-          <CardTitle>Saved Leases</CardTitle>
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">Saved Leases</CardTitle>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[400px]">
             {leases.map((savedLease) => (
               <Card key={savedLease.id} className="mb-4">
                 <CardHeader>
-                  <CardTitle>{savedLease.carModel}</CardTitle>
+                  <CardTitle className="text-lg font-bold">{savedLease.carModel}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">

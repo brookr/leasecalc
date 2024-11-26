@@ -20,7 +20,7 @@ export default function Home() {
 
   const saveLease = (lease: Partial<Lease>) => {
     if (!lease.carModel?.trim()) {
-      return; // Don't save if car model is empty or just whitespace
+      return;
     }
     
     const updatedLeases = editingLease
@@ -38,8 +38,8 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <main className="flex-1 overflow-y-auto p-4">
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-1 container mx-auto p-4 pb-24">
         {activeTab === 'calculator' && (
           <LeaseCalculator
             onSave={saveLease}
