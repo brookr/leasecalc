@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, FormEvent, MouseEvent } from 'react'
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -109,11 +109,6 @@ export default function LeaseCalculator({ onSave, editingLease, leases, onEdit, 
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    submitLease()
-  }
-
-  const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     submitLease()
   }
